@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core neutrals — light-forward base */
+  --color-bg: #F7F9FC;
+  --color-bg-alt: #EEF2F8;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+
+  /* Dark accent (hero / footer / CTA bands only) */
+  --color-dark: #05070D;
+  --color-dark-alt: #0B0F1A;
+  --color-dark-surface: #10141F;
+
+  /* Chrome / silver (headings, logo-matching metallic text & icons) */
+  --color-chrome-1: #F8FAFC;
+  --color-chrome-2: #CBD5E1;
+  --color-chrome-3: #64748B;
+  --chrome-gradient: linear-gradient(135deg, #F8FAFC 0%, #CBD5E1 45%, #94A3B8 70%, #E2E8F0 100%);
+
+  /* Cyan accent — brand signature */
+  --color-accent: #17B4E8;
+  --color-accent-2: #33E1FF;
+  --color-accent-glow: #7CF3FF;
+  --accent-gradient: linear-gradient(90deg, #0EA5D6 0%, #33E1FF 100%);
+
+  /* Text */
+  --color-text: #0F172A;
+  --color-text-muted: #4B5566;
+  --color-text-on-dark: #F1F5F9;
+  --color-text-on-dark-muted: #94A3B8;
+
+  /* Feedback */
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+
+  --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(23, 180, 232, 0.25);
+  color: #05070D;
+}
+
+/* Chrome metallic text gradient for dark hero / section headers */
+.text-chrome-gradient {
+  background: var(--chrome-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Cyan vibrant accent text gradient */
+.text-cyan-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Chrome border metallic accent */
+.border-chrome {
+  border-image: linear-gradient(135deg, rgba(203, 213, 225, 0.4), rgba(100, 116, 139, 0.2)) 1;
+}
+
+/* Background isometric / circuit lines */
+.bg-subtle-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+.bg-dark-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #05070D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #17B4E8;
+}
+
+/* Reduced motion preference compliance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
