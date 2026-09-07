@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { Suspense, useRef, useState, useEffect, Component, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
+import Image from "next/image";
 
 function GeometricCore() {
   const meshRef = useRef<THREE.Group>(null);
@@ -15,7 +16,7 @@ function GeometricCore() {
   useFrame((state, delta) => {
     if (!meshRef.current) return;
 
-    // Subtle pointer parallax
+    const clampedDelta = Math.min(delta, 0.05);
     const targetX = pointer.x * 0.4;
     const targetY = pointer.y * 0.3;
 
@@ -31,18 +32,17 @@ function GeometricCore() {
     );
 
     if (outerCageRef.current) {
-      outerCageRef.current.rotation.z += delta * 0.1;
-      outerCageRef.current.rotation.y += delta * 0.08;
+      outerCageRef.current.rotation.z += clampedDelta * 0.1;
+      outerCageRef.current.rotation.y += clampedDelta * 0.08;
     }
     if (innerCoreRef.current) {
-      innerCoreRef.current.rotation.y -= delta * 0.2;
-      innerCoreRef.current.rotation.x += delta * 0.15;
+      innerCoreRef.current.rotation.y -= clampedDelta * 0.2;
+      innerCoreRef.current.rotation.x += clampedDelta * 0.15;
     }
   });
 
   return (
     <group ref={meshRef}>
-      {/* Outer ambient faceted wireframe cage */}
       <mesh ref={outerCageRef}>
         <icosahedronGeometry args={[2.5, 0]} />
         <meshStandardMaterial
@@ -55,7 +55,6 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* Subtle floating inner cyan diamond crystal */}
       <mesh ref={innerCoreRef} scale={[0.7, 0.7, 0.7]}>
         <octahedronGeometry args={[1.2, 0]} />
         <meshStandardMaterial
@@ -69,8 +68,6 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* --- VT Chrome Monogram Structure --- */}
-      {/* V left arm */}
       <mesh position={[-0.55, 0.2, 0]} rotation={[0, 0, 0.48]}>
         <boxGeometry args={[0.2, 2.2, 0.22]} />
         <meshStandardMaterial
@@ -81,7 +78,6 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* V right arm / T stem */}
       <mesh position={[0.25, 0.2, 0]} rotation={[0, 0, -0.48]}>
         <boxGeometry args={[0.2, 2.2, 0.22]} />
         <meshStandardMaterial
@@ -92,7 +88,6 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* T top horizontal bar - left chrome portion */}
       <mesh position={[0.45, 1.05, 0.05]} rotation={[0, 0, 0]}>
         <boxGeometry args={[1.4, 0.2, 0.22]} />
         <meshStandardMaterial
@@ -102,7 +97,6 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* T top horizontal bar - electric cyan glowing tip (matches logo!) */}
       <mesh position={[1.25, 1.05, 0.05]} rotation={[0, 0, 0]}>
         <boxGeometry args={[0.45, 0.2, 0.22]} />
         <meshStandardMaterial
@@ -114,68 +108,124 @@ function GeometricCore() {
         />
       </mesh>
 
-      {/* Point light right at the cyan bar tip */}
       <pointLight position={[1.4, 1.1, 0.3]} color="#33E1FF" intensity={4} distance={6} />
-      {/* Chrome reflection key light */}
       <pointLight position={[-2, 1, 3]} color="#FFFFFF" intensity={2.5} distance={8} />
     </group>
   );
 }
 
+function LogoFallback({ pulsing = false }: { pulsing?: boolean }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="w-64 h-64 rounded-full bg-radial-glow-strong absolute opacity-70" />
+      <div className={`relative w-48 h-48 sm:w-56 sm:h-56 ${pulsing ? "animate-pulse" : ""}`}>
+        <Image
+          src="/logo-monogram-trans.png"
+          alt="Veltrixa Monogram"
+          fill
+          priority
+          sizes="(max-width: 640px) 192px, 224px"
+          className="object-contain drop-shadow-[0_0_35px_rgba(23,180,232,0.6)]"
+        />
+      </div>
+    </div>
+  );
+}
+
+class WebGLErrorBoundary extends Component<
+  { children: ReactNode; onError: () => void },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch() {
+    this.props.onError();
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 export function VTMonogram3D() {
-  const [isMounted, setIsMounted] = useState(false);
+  const [canRender3D, setCanRender3D] = useState(false);
+  const [canvasReady, setCanvasReady] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(mediaQuery.matches);
 
     const handleChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+
+    // Defer WebGL mount one frame so React Strict Mode remounts don't leave a dead context
+    let cancelled = false;
+    const frame = requestAnimationFrame(() => {
+      if (!cancelled) setCanRender3D(true);
+    });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      mediaQuery.removeEventListener("change", handleChange);
+    };
   }, []);
 
-  if (!isMounted) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="w-48 h-48 rounded-full bg-radial-glow animate-pulse" />
-      </div>
-    );
-  }
-
-  // Graceful fallback for reduced motion
-  if (reducedMotion) {
-    return (
-      <div className="w-full h-full flex items-center justify-center relative">
-        <div className="w-64 h-64 rounded-full bg-radial-glow-strong absolute" />
-        <img
-          src="/logo-monogram-trans.png"
-          alt="Veltrixa Monogram"
-          className="w-56 h-56 object-contain relative z-10 drop-shadow-[0_0_35px_rgba(23,180,232,0.6)]"
-        />
-      </div>
-    );
-  }
+  const showStatic = reducedMotion || useFallback || !canRender3D;
 
   return (
     <div className="w-full h-[380px] sm:h-[450px] lg:h-[540px] relative">
-      {/* Background ambient lighting glow */}
       <div className="absolute inset-0 bg-radial-glow-strong pointer-events-none opacity-60 blur-3xl" />
 
-      <Canvas
-        camera={{ position: [0, 0, 5.2], fov: 45 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        dpr={[1, 2]}
-      >
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[5, 8, 5]} intensity={3} color="#FFFFFF" />
-        <directionalLight position={[-5, -3, -2]} intensity={1.5} color="#CBD5E1" />
+      {/* Keep logo visible until the canvas paints — avoids empty “buffering” pulse */}
+      {(!canvasReady || showStatic) && <LogoFallback pulsing={!showStatic && !canvasReady} />}
 
-        <Float speed={1.8} rotationIntensity={0.4} floatIntensity={0.6}>
-          <GeometricCore />
-        </Float>
-      </Canvas>
+      {!showStatic && (
+        <WebGLErrorBoundary onError={() => setUseFallback(true)}>
+          <Canvas
+            className="!absolute inset-0 touch-none"
+            style={{ width: "100%", height: "100%", opacity: canvasReady ? 1 : 0 }}
+            camera={{ position: [0, 0, 5.2], fov: 45, near: 0.1, far: 100 }}
+            dpr={[1, 1.5]}
+            frameloop="always"
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: "default",
+              failIfMajorPerformanceCaveat: false,
+              stencil: false,
+              depth: true,
+            }}
+            onCreated={({ gl }) => {
+              gl.setClearColor(0x000000, 0);
+              const canvas = gl.domElement;
+              const onContextLost = (event: Event) => {
+                event.preventDefault();
+                setUseFallback(true);
+              };
+              canvas.addEventListener("webglcontextlost", onContextLost, false);
+              setCanvasReady(true);
+            }}
+          >
+            <Suspense fallback={null}>
+              <ambientLight intensity={0.9} />
+              <directionalLight position={[5, 8, 5]} intensity={3} color="#FFFFFF" />
+              <directionalLight position={[-5, -3, -2]} intensity={1.5} color="#CBD5E1" />
+
+              <Float speed={1.5} rotationIntensity={0.35} floatIntensity={0.5}>
+                <GeometricCore />
+              </Float>
+            </Suspense>
+          </Canvas>
+        </WebGLErrorBoundary>
+      )}
     </div>
   );
 }

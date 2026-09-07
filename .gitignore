@@ -28,4 +28,6 @@
 *.tsbuildinfo
 next-env.d.ts
 
-.Veltrixa-Technology-Master-Prompt.md
+# Private / local-only docs (do not publish to GitHub)
+Veltrixa-Technology-Master-Prompt.md
+LOCAL_SETUP_AND_RESEND.md

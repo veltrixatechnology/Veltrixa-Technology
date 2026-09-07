@@ -445,7 +445,7 @@ function ContactFormInner() {
               <Clock className="w-4 h-4 text-[#17B4E8] shrink-0 mt-0.5" />
               <div>
                 <strong className="text-slate-800 block">Operating Hours:</strong>
-                Monday – Saturday: Morning 9:00 AM – Night 10:00 PM IST. Direct developer assistance.
+                Monday – Sunday: Morning 9:00 AM – Night 10:00 PM IST. Direct developer assistance.
               </div>
             </div>
           </div>
