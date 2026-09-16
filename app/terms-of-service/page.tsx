@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Terms of Service governing project scopes, estimates, deliverables, intellectual property, and payment terms for Veltrixa Technology.",
   alternates: {
-    canonical: "https://veltrixa.com/terms-of-service",
+    canonical: `${siteConfig.url}/terms-of-service`,
   },
 };
 

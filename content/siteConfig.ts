@@ -24,8 +24,10 @@ export interface SiteConfig {
   copyright: string;
   navItems: NavItem[];
   socials: {
-    linkedin?: string;
-    instagram?: string;
+    linkedin: string;
+    instagram: string;
+    facebook: string;
+    threads: string;
     twitter?: string;
     github?: string;
   };
@@ -37,7 +39,7 @@ export const siteConfig: SiteConfig = {
   category: "Digital Agency — Web, App, Design, Marketing & Branding Studio",
   description:
     "Veltrixa Technology is a modern digital agency engineering high-performance websites, custom web & mobile applications, UI/UX designs, and growth-driven marketing systems.",
-  url: "https://veltrixa.com",
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://veltrixatechnology.in").replace(/\/$/, ""),
   email: "veltrixatechnology@gmail.com",
   phonePrimary: "+917204906807",
   phoneAlternate: "+919901310880",
@@ -60,9 +62,10 @@ export const siteConfig: SiteConfig = {
     { label: "Contact", href: "/contact" },
   ],
   socials: {
-    linkedin: "https://linkedin.com/company/veltrixa",
-    instagram: "https://instagram.com/veltrixatechnology",
-    twitter: "https://twitter.com/veltrixa",
-    github: "https://github.com/veltrixa",
+    linkedin: "https://www.linkedin.com/company/veltrixa-technology",
+    facebook: "https://www.facebook.com/veltrixatechnology",
+    instagram: "https://www.instagram.com/veltrixatechnology",
+    threads: "https://www.threads.net/@veltrixatechnology",
+    twitter: "https://twitter.com/veltrixatechnology",
   },
 };

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description:
     "Explore transparent pricing at Veltrixa Technology. Websites starting at ₹3,499* (+ GST). Custom web apps, mobile apps, UI/UX design, and marketing retainers.",
   alternates: {
-    canonical: "https://veltrixa.com/pricing",
+    canonical: `${siteConfig.url}/pricing`,
   },
 };
 

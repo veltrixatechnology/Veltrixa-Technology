@@ -61,12 +61,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${service.title} | Veltrixa Technology`,
     description: service.shortDescription,
     alternates: {
-      canonical: `https://veltrixa.com/services/${service.slug}`,
+      canonical: `${siteConfig.url}/services/${service.slug}`,
     },
     openGraph: {
       title: `${service.title} | Veltrixa Technology`,
       description: service.shortDescription,
-      url: `https://veltrixa.com/services/${service.slug}`,
+      url: `${siteConfig.url}/services/${service.slug}`,
     },
   };
 }
@@ -86,7 +86,7 @@ export default function ServiceDetailPage({ params }: Props) {
     provider: {
       "@type": "Organization",
       name: "Veltrixa Technology",
-      url: "https://veltrixa.com",
+      url: siteConfig.url,
     },
     offers: service.startingPrice
       ? {

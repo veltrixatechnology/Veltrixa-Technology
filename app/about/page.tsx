@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Learn about Veltrixa Technology — an engineering-first digital agency crafting next-generation websites, apps, and digital branding with precision and velocity.",
   alternates: {
-    canonical: "https://veltrixa.com/about",
+    canonical: `${siteConfig.url}/about`,
   },
 };
 

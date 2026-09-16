@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Privacy Policy for Veltrixa Technology detailing data collection via discovery forms, security standards, and client rights.",
   alternates: {
-    canonical: "https://veltrixa.com/privacy-policy",
+    canonical: `${siteConfig.url}/privacy-policy`,
   },
 };
 

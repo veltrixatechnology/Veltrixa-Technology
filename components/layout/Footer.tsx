@@ -11,6 +11,9 @@ import {
   Sparkles,
   ArrowUpRight,
   MessageSquare,
+  Instagram,
+  Linkedin,
+  Facebook,
 } from "lucide-react";
 
 export function Footer() {
@@ -48,6 +51,62 @@ export function Footer() {
                 Responsive business websites starting at{" "}
                 <span className="text-white font-bold">₹3,499*</span>. Free 15-minute technical discovery call available for all projects.
               </p>
+            </div>
+
+            {/* Social Media Connections (@veltrixatechnology) */}
+            <div className="space-y-2.5 pt-1">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#33E1FF] block">
+                Official Channels · @veltrixatechnology
+              </span>
+              <div className="flex items-center gap-2.5">
+                <a
+                  href={siteConfig.socials.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Veltrixa Technology on LinkedIn"
+                  className="w-9 h-9 rounded-lg bg-[#0B0F1A] border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#33E1FF] hover:border-[#17B4E8]/60 hover:shadow-[0_0_15px_rgba(23,180,232,0.3)] transition-all group"
+                  title="LinkedIn: @veltrixa-technology"
+                >
+                  <Linkedin className="w-4 h-4 transition-transform group-hover:scale-110" />
+                </a>
+                <a
+                  href={siteConfig.socials.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Veltrixa Technology on Facebook"
+                  className="w-9 h-9 rounded-lg bg-[#0B0F1A] border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#33E1FF] hover:border-[#17B4E8]/60 hover:shadow-[0_0_15px_rgba(23,180,232,0.3)] transition-all group"
+                  title="Facebook: @veltrixatechnology"
+                >
+                  <Facebook className="w-4 h-4 transition-transform group-hover:scale-110" />
+                </a>
+                <a
+                  href={siteConfig.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Veltrixa Technology on Instagram"
+                  className="w-9 h-9 rounded-lg bg-[#0B0F1A] border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#33E1FF] hover:border-[#17B4E8]/60 hover:shadow-[0_0_15px_rgba(23,180,232,0.3)] transition-all group"
+                  title="Instagram: @veltrixatechnology"
+                >
+                  <Instagram className="w-4 h-4 transition-transform group-hover:scale-110" />
+                </a>
+                <a
+                  href={siteConfig.socials.threads}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Veltrixa Technology on Threads"
+                  className="w-9 h-9 rounded-lg bg-[#0B0F1A] border border-slate-800 flex items-center justify-center text-slate-400 hover:text-[#33E1FF] hover:border-[#17B4E8]/60 hover:shadow-[0_0_15px_rgba(23,180,232,0.3)] transition-all group"
+                  title="Threads: @veltrixatechnology"
+                >
+                  {/* Threads SVG glyph */}
+                  <svg
+                    className="w-4 h-4 fill-current transition-transform group-hover:scale-110"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M12.186 24C5.466 24 0 18.672 0 12.102 0 5.533 5.466.205 12.186.205c6.516 0 11.83 5.099 12.01 11.536h-2.584C21.434 6.55 17.29 2.587 12.186 2.587 6.843 2.587 2.535 6.946 2.535 12.102c0 5.155 4.308 9.514 9.651 9.514 4.544 0 8.357-3.085 9.387-7.39h-5.016c-.46 1.34-1.748 2.302-3.266 2.302-1.922 0-3.485-1.545-3.485-3.447 0-1.903 1.563-3.448 3.485-3.448 1.488 0 2.753.926 3.238 2.222h5.114C21.05 7.643 17.02 4.673 12.186 4.673c-4.17 0-7.56 3.351-7.56 7.429 0 4.077 3.39 7.428 7.56 7.428 3.52 0 6.513-2.38 7.37-5.698h2.646C21.28 19.383 17.155 24 12.186 24z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 

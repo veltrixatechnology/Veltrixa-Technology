@@ -20,17 +20,20 @@ export const metadata: Metadata = {
     "Veltrixa Technology is a premier digital agency engineering high-performance websites, custom web & mobile applications, UI/UX designs, and growth marketing. Websites starting at ₹3,499*.",
   keywords: [
     "Veltrixa Technology",
+    "Veltrixa",
+    "Veltrixa Tech",
+    "Veltrixa Technology India",
     "Digital Agency",
     "Web Development",
     "Website Starting at ₹3499",
     "Mobile App Development",
     "UI UX Design Studio",
     "Branding and Logo Design",
-    "Digital Marketing",
+    "Digital Marketing Agency",
     "SEO Services",
-    "Next.js Agency",
+    "Next.js Development Agency",
   ],
-  authors: [{ name: "Veltrixa Technology" }],
+  authors: [{ name: "Veltrixa Technology", url: siteConfig.url }],
   creator: "Veltrixa Technology",
   publisher: "Veltrixa Technology",
   icons: {
@@ -71,6 +74,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   robots: {
     index: true,
     follow: true,
@@ -89,29 +95,69 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Structured data (Organization & ProfessionalService Schema)
-  const organizationSchema = {
+  // Comprehensive Schema.org JSON-LD graph (WebSite + ProfessionalService)
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: siteConfig.name,
-    legalName: "Veltrixa Technology",
-    url: siteConfig.url,
-    logo: `${siteConfig.url}/logo-dark.png`,
-    description: siteConfig.description,
-    email: siteConfig.email,
-    telephone: [siteConfig.phonePrimaryFormatted, siteConfig.phoneAlternateFormatted],
-    priceRange: "₹3,499 - ₹1,50,000",
-    sameAs: [
-      siteConfig.socials.linkedin,
-      siteConfig.socials.instagram,
-      siteConfig.socials.twitter,
-    ].filter(Boolean),
-    contactPoint: [
+    "@graph": [
       {
-        "@type": "ContactPoint",
-        telephone: siteConfig.phonePrimaryFormatted,
-        contactType: "customer service",
-        availableLanguage: ["English", "Hindi"],
+        "@type": "WebSite",
+        "@id": `${siteConfig.url}/#website`,
+        url: siteConfig.url,
+        name: "Veltrixa Technology",
+        alternateName: ["Veltrixa", "Veltrixa Tech", "Veltrixa Technology Studio"],
+        description: siteConfig.description,
+        publisher: {
+          "@id": `${siteConfig.url}/#organization`,
+        },
+        inLanguage: "en-US",
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": `${siteConfig.url}/#organization`,
+        name: "Veltrixa Technology",
+        legalName: "Veltrixa Technology",
+        alternateName: "Veltrixa",
+        url: siteConfig.url,
+        logo: `${siteConfig.url}/logo-dark.png`,
+        image: `${siteConfig.url}/og-image.png`,
+        description: siteConfig.description,
+        email: siteConfig.email,
+        telephone: [siteConfig.phonePrimaryFormatted, siteConfig.phoneAlternateFormatted],
+        priceRange: "₹3,499 - ₹1,50,000",
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "IN",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            opens: "09:00",
+            closes: "22:00",
+          },
+        ],
+        sameAs: [
+          siteConfig.socials.linkedin,
+          siteConfig.socials.facebook,
+          siteConfig.socials.instagram,
+          siteConfig.socials.threads,
+          siteConfig.socials.twitter,
+        ].filter(Boolean),
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: siteConfig.phonePrimaryFormatted,
+            contactType: "customer service",
+            availableLanguage: ["English", "Hindi"],
+          },
+        ],
       },
     ],
   };
@@ -123,7 +169,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-[#F7F9FC] text-[#0F172A] antialiased">

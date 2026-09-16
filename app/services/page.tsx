@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { servicesData } from "@/content/services";
+import { siteConfig } from "@/content/siteConfig";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Marquee } from "@/components/ui/Marquee";
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   description:
     "Explore Veltrixa Technology's full suite of digital engineering capabilities: Websites starting at ₹3,499*, Web Apps, Mobile Apps, UI/UX, Branding, SEO, and Marketing.",
   alternates: {
-    canonical: "https://veltrixa.com/services",
+    canonical: `${siteConfig.url}/services`,
   },
 };
 

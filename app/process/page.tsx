@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "Learn about our 9-step agile delivery roadmap from free 15-minute discovery consultation to production launch and ongoing SLA support.",
   alternates: {
-    canonical: "https://veltrixa.com/process",
+    canonical: `${siteConfig.url}/process`,
   },
 };
 
